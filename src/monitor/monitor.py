@@ -44,6 +44,8 @@ class MonitorTask:
         }
     def get_disk_usage(self):
         """Return the latest disk usage stats."""
+        if not self.disk_usage:
+         self.update_disk_usage()
         return self.disk_usage
 
 
