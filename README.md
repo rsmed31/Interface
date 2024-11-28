@@ -1,31 +1,11 @@
-# agent-py
+# Monitor Them
+![monitor]  
 
-## Requirements
-
-- Python 3.X
-- virtualenv [intall](https://virtualenv.pypa.io/en/latest/installation.html)
-
-## Run project
-
-```sh
-make environment
-make help
-make run
-#or
-make debug
-```
-
-## Configuration
-
-Environment variable:
-
-- AGENT_ENV: local/production
-- AGENT_VERSION: app version, default 1.0.0, endpoint /version
-- AGENT_DESCRIPTION: app description
-- AGENT_DEBUG: activate debug mode (boolean)
-
-local : enable reload mode (default)
-prod : no hot reload
+A Server Monitoring tool :
+* Connecting to all the machines "to be monitored",through SSH.
+* Get CPU & RAM & DISK info from these distant machines.
+* Extract info from LOGs on the machines.
+* Continuous delivery of the project in a Docker image.
 
 ## Usage
 
