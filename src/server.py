@@ -46,16 +46,17 @@ def init_listeners(fastapi: FastAPI) -> None:
             content={"error_code": exc.error_code, "message": exc.message},
         )
 
-    # Start monitoring thread
-    @asynccontextmanager
-    async def on_start_up(fastapi: FastAPI):
-        task = asyncio.create_task(fastapi.state.monitor_task.monitor())
-        try:
-            yield
-        finally:
-            print("Shutting down monitor task...")
-            task.cancel()
-
+# Start monitoring thread
+@asynccontextmanager
+async def on_start_up(fastapi: FastAPI):
+    """
+    Start the monitoring task when the FastAPI application starts up.
+    """
+    fastapi.state.monitortask = MonitorTask()
+    print("Starting monitor task...")
+    thread = threading.Thread(target=fastapi.state.monitortask.monitor, daemon=True)
+    thread.start()
+    yield
 
 def make_middleware() -> List[Middleware]:
     """
@@ -84,8 +85,6 @@ def create_app() -> FastAPI:
         FastAPI: The configured FastAPI application.
     """
     config = get_config()
-    # Monitoring thread to fetch metrics
-    monitortask = MonitorTask()
     # API
     fastapi = FastAPI(
         title=config.title,
@@ -94,8 +93,8 @@ def create_app() -> FastAPI:
         docs_url="/docs",
         redoc_url="/redoc",
         middleware=make_middleware(),
+        lifespan=on_start_up
     )
-    fastapi.state.monitortask = monitortask
     fastapi.state.version = config.version
     init_routers(fastapi)
     init_listeners(fastapi)
