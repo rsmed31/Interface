@@ -1,5 +1,4 @@
 # Monitor Them
-![monitor]  
 
 A Server Monitoring tool :
 * Connecting to all the machines "to be monitored",through SSH.
