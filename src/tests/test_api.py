@@ -18,6 +18,12 @@ class MonitorTaskFake(MonitorTask):
             "free": 150474244096,
             "percent": 40.0
         }
+        self.ram_usage = {
+            "total": 16777216,
+            "available": 8388608,
+            "used": 8388608,
+            "percent": 50.0
+        }
 
     def monitor(self):
         """Mock monitor method"""
@@ -80,7 +86,10 @@ def test_get_ram_usage(client):
     """Test RAM usage endpoint"""
     response = client.get("/metrics/v1/ram/usage")
     assert response.status_code == 200
-    assert "total" in response.json()
-    assert "available" in response.json()
-    assert "used" in response.json()
-    assert "percent" in response.json()
+    assert response.json()=={
+        "total": 16777216,
+            "available": 8388608,
+            "used": 8388608,
+            "percent": 50.0
+    }
+    
