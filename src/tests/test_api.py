@@ -1,49 +1,86 @@
-"""This module defines an exemple of test"""
-import threading
+"""This module defines tests for the API endpoints"""
+import pytest
 from fastapi.testclient import TestClient
-from server import app
+from server import create_app
 from monitor import MonitorTask
 
 
 class MonitorTaskFake(MonitorTask):
-    """
-    Monitor class to mock the real monitor
-    Instead of using the real monitor that fetch data on the host
-    we use a monitor that provide "fake" values to control the output
-    and make deterministic test (deterministic = repeatable and known values)
-    """
-    interval: int = 0
-    cpu_percent: list[float] = ["10", "12"]
-    num_cores: int = 3
+    """Mock monitor with deterministic test values"""
+    def __init__(self):
+        """Initialize with fake data"""
+        self.interval = 0
+        self.num_cores = 2
+        self.cpu_percent = ["10", "12"]
+        self.disk_usage = {
+            "total": 250790436864,
+            "used": 100316192768,
+            "free": 150474244096,
+            "percent": 40.0
+        }
 
     def monitor(self):
+        """Mock monitor method"""
         pass
 
-# Launching the real monitor for test involving the real monitor
-client = TestClient(app)
-thread = threading.Thread(target=app.state.monitortask.monitor, daemon=True)
-thread.start()
+    def get_disk_usage(self):
+        """Return fake disk stats"""
+        return self.disk_usage
 
 
-def test_health():
+@pytest.fixture
+def test_app():
+    """Create a test application with mocked monitor"""
+    app = create_app()
+    app.state.monitortask = MonitorTaskFake()
+    return app
+
+
+@pytest.fixture
+def client(test_app):
+    """Create a test client"""
+    return TestClient(test_app)
+
+
+def test_health(client):
+    """Test health check endpoint"""
     response = client.get("/health")
     assert response.status_code == 200
 
 
-def test_get_cpu_usage():
-    # backup of the existing monitortask to restore it after the test
-    save_app = app.state.monitortask
-    # use fake monitor to have deterministic values
-    app.state.monitortask = MonitorTaskFake()
+def test_get_cpu_usage(client):
+    """Test CPU usage endpoint"""
     response = client.get("/metrics/v1/cpu/usage")
     assert response.status_code == 200
-    assert response.json() == [{"id": 0, "usage": "10"}, {"id": 1, "usage": "12"}]
-    # restore monitortask for next test
-    app.state.monitortask = save_app
+    assert response.json() == [
+        {"id": 0, "usage": "10"},
+        {"id": 1, "usage": "12"}
+    ]
 
 
-def test_get_cpu_core():
+def test_get_cpu_core(client):
+    """Test CPU core endpoint"""
     response = client.get("/metrics/v1/cpu/core")
-    # we can test types but not values because they will change at each test.
     assert response.status_code == 200
-    assert isinstance(response.json()["number"], int)
+    assert response.json() == {"number": 2}
+
+
+def test_get_disk_usage(client):
+    """Test disk usage endpoint"""
+    response = client.get("/metrics/v1/disk/usage")
+    assert response.status_code == 200
+    assert response.json() == {
+        "total": 250790436864,
+        "used": 100316192768,
+        "free": 150474244096,
+        "percent": 40.0
+    }
+
+def test_get_ram_usage(client):
+    """Test RAM usage endpoint"""
+    response = client.get("/metrics/v1/ram/usage")
+    assert response.status_code == 200
+    assert "total" in response.json()
+    assert "available" in response.json()
+    assert "used" in response.json()
+    assert "percent" in response.json()
