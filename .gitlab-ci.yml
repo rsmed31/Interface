@@ -21,10 +21,6 @@ test:
     - pip install pytest pytest-html pytest-cov  # Install testing tools
     - pip install -r requirements.dev.txt  # Install development dependencies
   script:
-    - pytest --cov=src --cov-report=html --html=pytest-report.html /src/tests/
-  artifacts:
-    paths:
-      - htmlcov/  # Save HTML coverage reports
-      - pytest-report.html  # Save pytest HTML reports
-    expire_in: 10 weeks
+    - pytest  src/tests/
+
 
