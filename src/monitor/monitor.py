@@ -48,4 +48,19 @@ class MonitorTask:
          self.update_disk_usage()
         return self.disk_usage
 
+    def update_ram_usage(self):
+        """Fetch RAM usage statistics."""
+        ram_info = psutil.virtual_memory()
+        self.ram_usage = {
+            "total": ram_info.total,
+            "available": ram_info.available,
+            "used": ram_info.used,
+            "percent": ram_info.percent,
+        }
+
+    def get_ram_usage(self):
+        """Return the latest RAM usage stats."""
+        if not hasattr(self, 'ram_usage'):
+            self.update_ram_usage()
+        return self.ram_usage
 
