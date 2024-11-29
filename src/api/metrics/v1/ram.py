@@ -1,51 +1,16 @@
-"""
-This module defines API routes for handling RAM-related data.
-"""
-from typing import List
-from fastapi import APIRouter, Request
-from domain.schemas import (
-    ExceptionResponseSchema,
-    GetRamResponseSchema,
-    GetRamCoreResponseSchema,
-)
-from domain.services import RamService
+# FILE: src/api/metrics/v1/ram.py
+from fastapi import APIRouter, Request, HTTPException
+from domain.schemas.ram import GetRamResponseSchema
 
 ram_router = APIRouter()
 
-
-@ram_router.get(
-    "/usage",
-    response_model=List[GetRamResponseSchema],
-    # response_model_exclude={"id"},
-    responses={"400": {"model": ExceptionResponseSchema}},
-)
-async def get_ram_usage(request: Request) -> List[GetRamResponseSchema]:
-    """
-    Route to get a list of RAM data.
-
-    Args:
-        request (Request): The incoming request.
-
-    Returns:
-        List[GetRamResponseSchema]: A list of RAM data as per the response model.
-    """
-    return await RamService().get_ram_usage(request.app.state.monitortask)
-
-
-@ram_router.get(
-    "/core",
-    response_model=GetRamResponseSchema,
-    # response_model_exclude={"id"},
-    responses={"400": {"model": ExceptionResponseSchema}},
-)
-async def get_ram_info(request: Request) -> GetRamResponseSchema:
-    """
-    Route to get detailed RAM information
-
-    Args:
-        request (Request): The incoming request.
-
-    Returns:
-        int: Detailed RAM information
-    """
-    return await RamService().get_ram_info(request.app.state.monitortask)
+@ram_router.get("/usage", response_model=GetRamResponseSchema)
+async def get_ram_usage(request: Request) -> GetRamResponseSchema:
+    """Route to get RAM usage data."""
+    try:
+        ram_stats = request.app.state.monitortask.get_ram_usage()
+        if not ram_stats:
+            raise HTTPException(status_code=500, detail="RAM stats not available")
+        return GetRamResponseSchema(**ram_stats)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
