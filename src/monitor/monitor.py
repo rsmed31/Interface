@@ -22,12 +22,14 @@ class MonitorTask:
         self.num_cores = psutil.cpu_count(logical=False)
         self.cpu_percent = [0] * self.num_cores
         self.disk_usage = {}
+        self.ram_usage = {}
 
     def monitor(self):
         """Continuously monitor and store the result in an attribute."""
         while True:
             self.cpu_percent = psutil.cpu_percent(percpu=True)
             self.update_disk_usage()
+            self.update_ram_usage()
             time.sleep(self.interval)
             
     def __str__(self) -> str:
