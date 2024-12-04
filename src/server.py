@@ -20,7 +20,7 @@ import asyncio
 
 def init_routers(fastapi: FastAPI) -> None:
     """
-    Initialize API routers and include them in the FastAPI fastapi.
+    Initialize API routers and include them in the FastAPI application.
 
     Args:
         fastapi (FastAPI): The FastAPI application to add routers to.
@@ -30,10 +30,9 @@ def init_routers(fastapi: FastAPI) -> None:
     # Add domain routes
     fastapi.include_router(router)
 
-
 def init_listeners(fastapi: FastAPI) -> None:
     """
-    Initialize event listeners and exception handlers for the FastAPI fastapi.
+    Initialize event listeners and exception handlers for the FastAPI application.
 
     Args:
         fastapi (FastAPI): The FastAPI application to set up event listeners and handlers for.
@@ -46,36 +45,15 @@ def init_listeners(fastapi: FastAPI) -> None:
             content={"error_code": exc.error_code, "message": exc.message},
         )
 
-# Start monitoring thread
-@asynccontextmanager
-async def on_start_up(fastapi: FastAPI):
-    """
-    Start the monitoring task when the FastAPI application starts up.
-    """
-    fastapi.state.monitortask = MonitorTask()
-    print("Starting monitor task...")
-    thread = threading.Thread(target=fastapi.state.monitortask.monitor, daemon=True)
-    thread.start()
-    yield
-
-def make_middleware() -> List[Middleware]:
-    """
-    Create and return a list of middleware components, including CORS middleware.
-
-    Returns:
-        List[Middleware]: List of FastAPI middleware components.
-    """
-    middleware = [
-        Middleware(
-            CORSMiddleware,
-            allow_origins=["*"],
-            allow_credentials=True,
-            allow_methods=["*"],
-            allow_headers=["*"],
-        ),
-    ]
-    return middleware
-
+    # Start monitoring thread
+    @fastapi.on_event("startup")
+    async def start_monitoring():
+        try:
+            monitor_task = MonitorTask()
+            threading.Thread(target=monitor_task.monitor, daemon=True).start()
+            fastapi.state.monitortask = monitor_task
+        except Exception as e:
+            logger.error(f"Failed to start monitoring task: {e}")
 
 def create_app() -> FastAPI:
     """
@@ -85,20 +63,19 @@ def create_app() -> FastAPI:
         FastAPI: The configured FastAPI application.
     """
     config = get_config()
-    # API
-    fastapi = FastAPI(
+    app = FastAPI(
         title=config.title,
         description=config.description,
         version=config.version,
-        docs_url="/docs",
-        redoc_url="/redoc",
-        middleware=make_middleware(),
-        lifespan=on_start_up
+        debug=config.debug,
+        middleware=[
+            Middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"]),
+        ],
     )
-    fastapi.state.version = config.version
-    init_routers(fastapi)
-    init_listeners(fastapi)
-    return fastapi
 
+    init_routers(app)
+    init_listeners(app)
+
+    return app
 
 app = create_app()
