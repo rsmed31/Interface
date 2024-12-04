@@ -1,4 +1,3 @@
-<<<<<<< src/api/__init__.py
 from fastapi import APIRouter
 from api.metrics.v1.cpu import cpu_router as cpu_v1_router
 from api.metrics.v1.disk import disk_router as disk_v1_router
