@@ -9,7 +9,6 @@ from domain.schemas import (
     GetCpuCoreResponseSchema,
 )
 from domain.services import CpuService
-
 cpu_router = APIRouter()
 
 

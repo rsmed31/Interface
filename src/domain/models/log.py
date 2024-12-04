@@ -1,21 +1,18 @@
-"""
-This module defines a data model for CPU information.
-"""
-from pydantic import BaseModel # type: ignore
+from pydantic import BaseModel
 
-
-# Log data model
 class Log(BaseModel):
     """
     Pydantic data model for representing Log information.
 
     Attributes:
-        nbip (int)
-        failed (int)
-        succed (int)
-        nbwebsites (dict)
+        nbip (int): Number of IP addresses
+        failed (int): Number of failed requests
+        succeed (int): Number of successful requests
+        nbwebsites (dict): Number of visits per website
+        ip_visits (dict): Mapping of IP addresses to visited pages
     """
-    nbip: int # Number of IP addresses
-    failed: int # Number of failed requests
-    succeed: int # Number of successful requests
-    nbwebsites: dict # Number of visits per website
+    nbip: int
+    failed: int
+    succeed: int
+    nbwebsites: dict
+    ip_visits: dict  # New attribute to track IP visits

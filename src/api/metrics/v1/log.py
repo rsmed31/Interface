@@ -1,7 +1,7 @@
 """
-This module defines API routes for handling CPU-related data.
+This module defines API routes for handling log-related data.
 """
-from fastapi import APIRouter, Request # type: ignore
+from fastapi import APIRouter, Request
 from domain.schemas import (
     ExceptionResponseSchema,
     GetLogResponseSchema,
@@ -10,23 +10,19 @@ from domain.services import LogService
 
 log_router = APIRouter()
 
-
 @log_router.get(
-    "",
+    "/logs",
     response_model=GetLogResponseSchema,
-    # response_model_exclude={"id"},
     responses={"400": {"model": ExceptionResponseSchema}},
 )
 async def get_log(request: Request) -> GetLogResponseSchema:
     """
-    Route to get a list of Log data.
+    Route to get log data.
 
     Args:
         request (Request): The incoming request.
 
     Returns:
-        List[GetLogResponseSchema]: A list of Log data as per the response model.
+        GetLogResponseSchema: Log data as per the response model.
     """
     return await LogService().get_log()
-
-

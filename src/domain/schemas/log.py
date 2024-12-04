@@ -1,21 +1,24 @@
 """
-This module defines a data transfer model for a GetLogResponseSchema.
+This module defines the schema for log-related data.
 """
-from pydantic import BaseModel # type: ignore
+from pydantic import BaseModel
+from typing import Dict, List
+
 
 
 class GetLogResponseSchema(BaseModel):
     """
-    Pydantic data model for the response schema representing Log information.
+    Pydantic schema for representing log response data.
 
     Attributes:
-        nbip (int)
-        failed (int)
-        succeed (int)
-        nbwebsites (dict)
+        nbip (int): Number of unique IP addresses.
+        failed (int): Number of failed requests.
+        succeed (int): Number of successful requests.
+        nbwebsites (Dict[str, int]): Number of visits per website.
+        ip_visits (Dict[str, List[str]]): IP visits.
     """
-    nbip: int # Number of IP addresses
-    failed: int # Number of failed requests
-    succeed: int # Number of successful requests
-    nbwebsites: dict # Number of visits per website
-
+    nbip: int
+    failed: int
+    succeed: int
+    nbwebsites: Dict[str, int]
+    ip_visits: Dict[str, List[str]]
