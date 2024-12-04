@@ -4,3 +4,4 @@ click
 pytest
 httpx
 psutil
+apache_log_parser
