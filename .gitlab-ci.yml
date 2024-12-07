@@ -1,3 +1,4 @@
+
 stages:
   - test
 
@@ -7,7 +8,7 @@ test:
   image: python:3.12
   script:
     - make environment  # Configure virtual environment
-    - make test  # Run tests with coverage
+    - make test  # Run tests
   only:
     - main
     - merge_requests

@@ -19,10 +19,14 @@ class GetCpuResponseSchema(BaseModel):
 
 class GetCpuCoreResponseSchema(BaseModel):
     """
-    Pydantic data model for the response schema representing CPU core number.
+    Pydantic data model for the response schema representing CPU core information.
 
     Attributes:
-        number (int): CPU core number.
+        processor_name (str): The name of the processor.
+        number_of_cores (int): The number of CPU cores.
+        frequency (float): The frequency of the CPU in MHz.
     """
 
-    number: int
+    processor_name: str
+    number_of_cores: int
+    frequency: float

@@ -1,6 +1,7 @@
 """This module defines a `MonitorTask` class for monitoring metrics on a host."""
 import time
 import psutil
+import platform
 
 
 class MonitorTask:
@@ -31,7 +32,7 @@ class MonitorTask:
             self.update_disk_usage()
             self.update_ram_usage()
             time.sleep(self.interval)
-            
+
     def __str__(self) -> str:
         return f"MonitorTask(interval = {self.interval})"
 
@@ -44,10 +45,11 @@ class MonitorTask:
             "free": disk_info.free,
             "percent": disk_info.percent,
         }
+
     def get_disk_usage(self):
         """Return the latest disk usage stats."""
         if not self.disk_usage:
-         self.update_disk_usage()
+            self.update_disk_usage()
         return self.disk_usage
 
     def update_ram_usage(self):
@@ -66,3 +68,10 @@ class MonitorTask:
             self.update_ram_usage()
         return self.ram_usage
 
+    def get_processor_name(self) -> str:
+        """Fetch the processor name."""
+        return platform.processor()
+
+    def get_cpu_frequency(self) -> float:
+        """Fetch the CPU frequency in MHz."""
+        return psutil.cpu_freq().current
