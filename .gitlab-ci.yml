@@ -8,3 +8,6 @@ test:
   script:
     - make environment  # Configure virtual environment
     - make test  # Run tests with coverage
+  only:
+    - main
+    - merge_requests
