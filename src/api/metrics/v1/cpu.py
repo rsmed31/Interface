@@ -39,12 +39,19 @@ async def get_cpu(request: Request) -> List[GetCpuResponseSchema]:
 )
 async def get_core_number(request: Request) -> GetCpuCoreResponseSchema:
     """
-    Route to get the number of CPU core.
+    Route to get CPU core information.
 
     Args:
         request (Request): The incoming request.
 
     Returns:
-        int: number of cpu core.
+        Cpu name,number of cores and frequency.
     """
-    return GetCpuCoreResponseSchema(number=request.app.state.monitortask.num_cores)
+    processor_name = request.app.state.monitortask.get_processor_name()
+    number_of_cores = request.app.state.monitortask.num_cores
+    frequency = request.app.state.monitortask.get_cpu_frequency()
+    return GetCpuCoreResponseSchema(
+        processor_name=processor_name,
+        number_of_cores=number_of_cores,
+        frequency=frequency,
+    )

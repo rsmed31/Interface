@@ -24,6 +24,8 @@ class MonitorTaskFake(MonitorTask):
             "used": 8388608,
             "percent": 50.0
         }
+        self.processor_name = "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz"
+        self.cpu_frequency = 1800.0
 
     def monitor(self):
         """Mock monitor method"""
@@ -32,6 +34,14 @@ class MonitorTaskFake(MonitorTask):
     def get_disk_usage(self):
         """Return fake disk stats"""
         return self.disk_usage
+
+    def get_processor_name(self) -> str:
+        """Return fake processor name"""
+        return self.processor_name
+
+    def get_cpu_frequency(self) -> float:
+        """Return fake CPU frequency"""
+        return self.cpu_frequency
 
 
 @pytest.fixture
@@ -68,7 +78,11 @@ def test_get_cpu_core(client):
     """Test CPU core endpoint"""
     response = client.get("/metrics/v1/cpu/core")
     assert response.status_code == 200
-    assert response.json() == {"number": 2}
+    assert response.json() == {
+        "processor_name": "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz",
+        "number_of_cores": 2,
+        "frequency": 1800.0
+    }
 
 
 def test_get_disk_usage(client):
