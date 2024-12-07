@@ -1,26 +1,10 @@
 stages:
-  - compilation
   - test
-
-# Compilation Stage
-compilation:
-  stage: compilation
-  image: python:3.12
-  before_script:
-    - python --version  # Display Python version
-    - pip install -r requirements.dev.txt  # Install dependencies
-  script:
-    - echo "Compilation stage complete."
 
 # Test Stage
 test:
   stage: test
   image: python:3.12
-  before_script:
-    - python --version  # Display Python version
-    - pip install pytest pytest-html pytest-cov  # Install testing tools
-    - pip install -r requirements.dev.txt  # Install development dependencies
   script:
-    - pytest  src/tests/
-
-
+    - make environment  # Configure virtual environment
+    - make test  # Run tests with coverage
