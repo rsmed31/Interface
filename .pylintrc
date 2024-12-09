@@ -1,0 +1,14 @@
+[MASTER]
+disable=
+    missing-docstring,
+    invalid-name,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-locals,
+    too-many-branches
+
+[MESSAGES CONTROL]
+enable=all
+
+[REPORTS]
+output-format=colorized
