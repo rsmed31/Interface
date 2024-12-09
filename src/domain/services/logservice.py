@@ -3,6 +3,7 @@ This module defines a controller class for fetching Logs from a monitoring task.
 """
 from domain.models import Log
 import apache_log_parser
+import os
 
 log_format = '%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"'
 parser = apache_log_parser.make_parser(log_format)
@@ -18,7 +19,7 @@ def log_parser(log_entry):
     ]
     return result_log
 
-def count_log(log_file="src/logs/wordpress.log"):  # Update the default path here
+def count_log(log_file=os.path.abspath("src/logs/wordpress.log")):  # Update the default path here
     unique_ips = set()
     cpt_404 = 0
     cpt_200 = 0

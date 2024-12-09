@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from domain.services.logservice import count_log, log_parser
 from server import create_app
 from monitor import MonitorTask
+import os
 
 
 class MonitorTaskFake(MonitorTask):
@@ -43,6 +44,13 @@ class MonitorTaskFake(MonitorTask):
     def get_cpu_frequency(self) -> float:
         """Return fake CPU frequency"""
         return self.cpu_frequency
+    def get_log_data(self):
+        """Return log data from logs/wordpress.log"""
+        log_file_path = os.path.abspath("src/logs/wordpress.log")
+        if os.path.exists(log_file_path):
+            with open(log_file_path, 'r') as file:
+                return file.readlines()
+        return []
 
 
 @pytest.fixture
@@ -107,32 +115,32 @@ def test_get_ram_usage(client):
             "used": 8388608,
             "percent": 50.0
     }
-    
 
-LOG = (
-    '192.168.240.50 - - [08/Dec/2023:08:55:20 +0000] "GET / HTTP/1.0" '
-    '200 15075 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-    '(KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"'
-)
 
-result_log = ['192.168.240.50','[08/Dec/2023:08:55:20 +0000]','GET', '/ HTTP/1.0','200']
+def test_get_log_data(client):
+    """Test log data endpoint"""
+    response = client.get("/metrics/v1/log/logs")
+    assert response.status_code == 200
+    assert response.json() == {
+        "nbip": 5,
+        "failed": 7,
+        "succeed": 20,
+        "nbwebsites": {
+            "Home": 6,
+            "/page1": 6,
+            "/page2": 8,
+            "/page3": 7
+        },
+        "ip_visits": {
+            "192.168.1.10": ["Home", "/page1", "/page3", "Home", "Home", "/page1"],
+            "10.0.0.1": ["/page2", "/page1", "/page3", "/page2", "/page1", "/page2"],
+            "172.16.0.1": ["/page2", "Home", "/page3", "/page1", "Home"],
+            "203.0.113.1": ["/page2", "/page3", "/page1", "/page3", "/page2"],
+            "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"]
+        }
+    }
 
-def test_parsing():
-    """
-    Test case for parsing a log using `log_parser`.
-
-    This function tests the `log_parser` function by passing a log message
-    (`LOG`) and checks if the returned result matches the `result_log`.
-
-    Raises:
-        AssertionError: If the parsed result does not match the expected result.
-    """
-    result = log_parser(LOG)
-    print(result)
-    print(result_log)
-    assert result == result_log
-
-def test_count_log() :
+def test_count_log():
     """
     Test case for counting logs in a file.
 
@@ -144,14 +152,21 @@ def test_count_log() :
         AssertionError: If the counts of IPs, successful requests, failed requests,
                         or page visits do not match the expected values.
     """
-    result = count_log("src/logs/wordpress.log")
+    result = count_log(os.path.abspath("src/logs/wordpress.log"))
     assert result['total_ip'] == 5
     assert result['good'] == 20
     assert result['error'] == 7
-    assert result['total_pages'], {
-                'Home' : 6,
-                '/page1': 6,
-                '/page2': 8,
-                '/page3': 7
-            }
+    assert result['total_pages'] == {
+        'Home': 6,
+        '/page1': 6,
+        '/page2': 8,
+        '/page3': 7
+    }
+    assert result['ip_visits'] == {
+        "192.168.1.10": ["Home", "/page1", "/page3", "Home", "Home", "/page1"],
+        "10.0.0.1": ["/page2", "/page1", "/page3", "/page2", "/page1", "/page2"],
+        "172.16.0.1": ["/page2", "Home", "/page3", "/page1", "Home"],
+        "203.0.113.1": ["/page2", "/page3", "/page1", "/page3", "/page2"],
+        "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"]
+    }
 
