@@ -1,0 +1,4 @@
+skips:
+  - B101  # Ignore les vérifications des assertions
+targets: ["src/"]
+exclude_dirs: ["tests/"]
