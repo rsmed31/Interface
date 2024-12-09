@@ -1,6 +1,7 @@
 """This module defines tests for the API endpoints"""
 import pytest
 from fastapi.testclient import TestClient
+from domain.services.logservice import count_log, log_parser
 from server import create_app
 from monitor import MonitorTask
 
@@ -107,3 +108,50 @@ def test_get_ram_usage(client):
             "percent": 50.0
     }
     
+
+LOG = (
+    '192.168.240.50 - - [08/Dec/2023:08:55:20 +0000] "GET / HTTP/1.0" '
+    '200 15075 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+    '(KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"'
+)
+
+result_log = ['192.168.240.50','[08/Dec/2023:08:55:20 +0000]','GET', '/ HTTP/1.0','200']
+
+def test_parsing():
+    """
+    Test case for parsing a log using `log_parser`.
+
+    This function tests the `log_parser` function by passing a log message
+    (`LOG`) and checks if the returned result matches the `result_log`.
+
+    Raises:
+        AssertionError: If the parsed result does not match the expected result.
+    """
+    result = log_parser(LOG)
+    print(result)
+    print(result_log)
+    assert result == result_log
+
+def test_count_log() :
+    """
+    Test case for counting logs in a file.
+
+    This function tests the `count_log` function by providing a file path
+    and asserts the counts of unique IPs, successful requests, failed requests,
+    and page visit counts against expected values.
+
+    Raises:
+        AssertionError: If the counts of IPs, successful requests, failed requests,
+                        or page visits do not match the expected values.
+    """
+    result = count_log("src/logs/wordpress.log")
+    assert result['total_ip'] == 5
+    assert result['good'] == 20
+    assert result['error'] == 7
+    assert result['total_pages'], {
+                'Home' : 6,
+                '/page1': 6,
+                '/page2': 8,
+                '/page3': 7
+            }
+
