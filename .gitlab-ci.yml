@@ -23,7 +23,6 @@ lint:
   script:
     - make environment
     - pylint src/
-  allow_failure: false
 
 # Étape d'analyse statique
 static-analysis:
