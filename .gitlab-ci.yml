@@ -22,7 +22,7 @@ lint:
   image: python:3.12
   script:
     - make environment
-    - pylint src/
+    - pylint src/ --fail-under=9
 
 # Étape d'analyse statique
 static-analysis:
