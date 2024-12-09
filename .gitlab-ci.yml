@@ -1,16 +1,27 @@
 
 stages:
+  - test
   - lint
   - static-analysis
-  - test
+
+# Test Stage
+test:
+  stage: test
+  image: python:3.12
+  script:
+    - make environment
+    - pytest --cov=src --cov-report=xml --cov-report=term-missing
+  artifacts:
+    paths:
+      - coverage.xml
+    expire_in: 1 week
 
 # Étape de linting
 lint:
   stage: lint
   image: python:3.12
-  before_script:
-    - pip install -r requirements.dev.txt
   script:
+    - make environment
     - pylint src/
   allow_failure: false
 
@@ -18,20 +29,6 @@ lint:
 static-analysis:
   stage: static-analysis
   image: python:3.12
-  before_script:
-    - pip install -r requirements.dev.txt
   script:
+    - make environment
     - bandit -r src/
-
-# Test Stage
-test:
-  stage: test
-  image: python:3.12
-  before_script:
-    - pip install -r requirements.dev.txt
-  script:
-    - pytest --cov=src --cov-report=xml --cov-report=term-missing
-  artifacts:
-    paths:
-      - coverage.xml
-    expire_in: 1 week
