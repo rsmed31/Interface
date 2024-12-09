@@ -1,4 +1,0 @@
-[bandit]
-exclude_dirs = src/tests
-targets = src/
-skip = B101,B104

@@ -1,0 +1,9 @@
+[bandit]
+exclude_dirs = tests, migrations, examples, docs
+
+#
+skipped_tests = B101,B104
+
+targets = src/
+
+exclude_files = src/config.py
