@@ -1,5 +1,9 @@
 # Monitor Them
 
+![Lint](https://img.shields.io/badge/lint-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-passing-brightgreen)
+
+
 A Server Monitoring tool :
 * Connecting to all the machines "to be monitored",through SSH.
 * Get CPU & RAM & DISK info from these distant machines.
