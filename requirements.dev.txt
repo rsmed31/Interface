@@ -5,7 +5,6 @@ pytest
 httpx
 psutil
 apache_log_parser
-os
 pylint
 bandit
 pytest-cov
