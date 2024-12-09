@@ -5,7 +5,10 @@ disable=
     too-few-public-methods,
     too-many-arguments,
     too-many-locals,
-    too-many-branches
+    too-many-branches,
+    missing-final-newline,
+    wrong-import-order
+
 
 [MESSAGES CONTROL]
 enable=all
