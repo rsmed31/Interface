@@ -10,4 +10,4 @@ bandit:
     - src/
 
   exclude_files:
-    - src/config.py
+    - src/core/config.py
