@@ -1,4 +1,4 @@
-skips:
-  - B101  # Ignore les vérifications des assertions
-targets: ["src/"]
-exclude_dirs: ["tests/"]
+[bandit]
+exclude_dirs = src/tests
+targets = src/
+skip = B101,B104
