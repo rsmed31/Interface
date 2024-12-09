@@ -1,14 +1,33 @@
 
 stages:
   - test
+  - lint
+  - static-analysis
 
 # Test Stage
 test:
   stage: test
   image: python:3.12
   script:
-    - make environment  # Configure virtual environment
-    - make test  # Run tests
-  only:
-    - main
-    - merge_requests
+    - make environment
+    - pytest --cov=src --cov-report=xml --cov-report=term-missing
+  artifacts:
+    paths:
+      - coverage.xml
+    expire_in: 1 week
+
+# Étape de linting
+lint:
+  stage: lint
+  image: python:3.12
+  script:
+    - make environment
+    - pylint src/ --fail-under=9
+
+# Étape d'analyse statique
+static-analysis:
+  stage: static-analysis
+  image: python:3.12
+  script:
+    - make environment
+    - bandit -r src/ -c .bandit.yml --exclude src/tests,src/core/config.py 
