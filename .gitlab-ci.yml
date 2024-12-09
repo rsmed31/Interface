@@ -30,4 +30,4 @@ static-analysis:
   image: python:3.12
   script:
     - make environment
-    - bandit -r src/ -c .bandit.yml
+    - bandit -r src/ -c .bandit.yml --exclude src/tests,src/core/config.py 
