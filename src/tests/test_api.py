@@ -44,6 +44,11 @@ class MonitorTaskFake(MonitorTask):
     def get_cpu_frequency(self) -> float:
         """Return fake CPU frequency"""
         return self.cpu_frequency
+
+    def get_connected_users(self):
+        # Return mock connected users
+        return ["user1", "user2", "user3"]
+
     def get_log_data(self):
         """Return log data from logs/wordpress.log"""
         log_file_path = os.path.abspath("src/logs/wordpress.log")
@@ -170,3 +175,8 @@ def test_count_log():
         "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"]
     }
 
+def test_get_connected_users(client):
+    """Test the connected users endpoint"""
+    response = client.get("/metrics/v1/users/connected")
+    assert response.status_code == 200
+    assert response.json() == ["user1", "user2", "user3"]

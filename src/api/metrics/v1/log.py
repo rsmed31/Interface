@@ -7,6 +7,8 @@ from domain.schemas import (
     GetLogResponseSchema,
 )
 from domain.services import LogService
+from domain.schemas.logentry import LogEntrySchema
+from typing import List
 
 log_router = APIRouter()
 
@@ -26,3 +28,20 @@ async def get_log(request: Request) -> GetLogResponseSchema:
         GetLogResponseSchema: Log data as per the response model.
     """
     return await LogService().get_log()
+
+@log_router.get(
+    "/logs/recent",
+    response_model=List[LogEntrySchema],
+    responses={"400": {"model": ExceptionResponseSchema}},
+)
+async def get_recent_logs(request: Request) -> List[LogEntrySchema]:
+    """
+    Route to get the last 5 log entries.
+
+    Args:
+        request (Request): The incoming request.
+
+    Returns:
+        List[LogEntrySchema]: A list of the last 5 log entries.
+    """
+    return await LogService().get_recent_logs(5)
