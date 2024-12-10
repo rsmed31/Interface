@@ -4,6 +4,7 @@ This module defines a controller class for fetching Logs from a monitoring task.
 from domain.models import Log
 import apache_log_parser
 import os
+from typing import List, Dict
 
 log_format = '%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"'
 parser = apache_log_parser.make_parser(log_format)
@@ -97,6 +98,27 @@ def count_log(log_file=os.path.abspath("src/logs/wordpress.log")):  # Update the
             'ip_visits': {}  # Return empty IP visits
         }
 
+def get_last_logs(count: int, log_file=os.path.abspath("src/logs/wordpress.log")) -> List[Dict]:
+    try:
+        with open(log_file, 'r') as file:
+            lines = file.readlines()
+            last_lines = lines[-count:]
+            entries = []
+            for line in last_lines:
+                log_entry = log_parser(line)
+                entry = {
+                    "ip": log_entry[0],
+                    "time": log_entry[1],
+                    "request_method": log_entry[2],
+                    "request_url": log_entry[3],
+                    "status": log_entry[4],
+                }
+                entries.append(entry)
+            return entries
+    except Exception as e:
+        # Handle exceptions as needed
+        return []
+
 class LogService:
 
     def __init__(self):
@@ -111,6 +133,9 @@ class LogService:
             nbwebsites=result['total_pages'],
             ip_visits=result['ip_visits']  # Include IP visits in the response
         )
+    async def get_recent_logs(self, count: int) -> List[Dict]:
+        result = get_last_logs(count)
+        return result
 
     def __str__(self):
         return self.__class__.__name__

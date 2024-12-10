@@ -75,3 +75,11 @@ class MonitorTask:
     def get_cpu_frequency(self) -> float:
         """Fetch the CPU frequency in MHz."""
         return psutil.cpu_freq().current
+
+    def get_connected_users(self):
+        """Return connected users using psutil.users()."""
+        connected_users = []
+        for user in psutil.users():
+            user_info = f"{user.name} {user.terminal} {user.host or ''} {time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}"
+            connected_users.append(user_info)
+        return connected_users

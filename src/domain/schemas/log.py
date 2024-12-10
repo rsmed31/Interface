@@ -22,3 +22,4 @@ class GetLogResponseSchema(BaseModel):
     succeed: int
     nbwebsites: Dict[str, int]
     ip_visits: Dict[str, List[str]]
+
