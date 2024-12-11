@@ -1,4 +1,0 @@
-Le fichier src/tests/wordpressStatic.log n'a pas été trouvé. Erreur : [Errno 2] No such file or directory: 'src/tests/wordpressStatic.log'
-Le fichier src/tests/wordpress.log n'a pas été trouvé. Erreur : [Errno 2] No such file or directory: 'src/tests/wordpress.log'
-Une erreur s'est produite lors de la lecture du fichier http://localhost:8000/docs#/default/get_log_metrics_v1_log_logs_get. Erreur : [Errno 22] Invalid argument: 'http://localhost:8000/docs#/default/get_log_metrics_v1_log_logs_get'
-Une erreur s'est produite lors de la lecture du fichier http://localhost:8000/docs#/default/get_log_metrics_v1_log_logs_get. Erreur : [Errno 22] Invalid argument: 'http://localhost:8000/docs#/default/get_log_metrics_v1_log_logs_get'
