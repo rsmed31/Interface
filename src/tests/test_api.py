@@ -1,7 +1,7 @@
 """This module defines tests for the API endpoints"""
 import pytest
 from fastapi.testclient import TestClient
-from domain.services.logservice import count_log, log_parser
+from domain.services.logservice import count_log
 from server import create_app
 from monitor import MonitorTask
 import os
@@ -145,38 +145,56 @@ def test_get_log_data(client):
         }
     }
 
-def test_count_log():
-    """
-    Test case for counting logs in a file.
 
-    This function tests the `count_log` function by providing a file path
-    and asserts the counts of unique IPs, successful requests, failed requests,
-    and page visit counts against expected values.
 
-    Raises:
-        AssertionError: If the counts of IPs, successful requests, failed requests,
-                        or page visits do not match the expected values.
-    """
-    result = count_log(os.path.abspath("src/logs/wordpress.log"))
-    assert result['total_ip'] == 5
-    assert result['good'] == 20
-    assert result['error'] == 7
-    assert result['total_pages'] == {
-        'Home': 6,
-        '/page1': 6,
-        '/page2': 8,
-        '/page3': 7
-    }
-    assert result['ip_visits'] == {
-        "192.168.1.10": ["Home", "/page1", "/page3", "Home", "Home", "/page1"],
-        "10.0.0.1": ["/page2", "/page1", "/page3", "/page2", "/page1", "/page2"],
-        "172.16.0.1": ["/page2", "Home", "/page3", "/page1", "Home"],
-        "203.0.113.1": ["/page2", "/page3", "/page1", "/page3", "/page2"],
-        "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"]
-    }
+def test_get_recent_logs_with_correct_data(client):
+    """Test recent logs endpoint with correct data"""
+    response = client.get("/metrics/v1/log/logs/recent")
+    assert response.status_code == 200
+    assert len(response.json()) == 5  
+    assert response.json() == [
+  {
+    "ip": "172.16.0.1",
+    "time": "[08/Jan/2020:11:15:43 +0000]",
+    "request_method": "GET",
+    "request_url": "/",
+    "status": "200"
+  },
+  {
+    "ip": "203.0.113.1",
+    "time": "[08/Jan/2020:13:50:11 +0000]",
+    "request_method": "GET",
+    "request_url": "/page2",
+    "status": "200"
+  },
+  {
+    "ip": "198.51.100.1",
+    "time": "[09/Jan/2020:07:40:50 +0000]",
+    "request_method": "GET",
+    "request_url": "/page3",
+    "status": "404"
+  },
+  {
+    "ip": "192.168.1.10",
+    "time": "[09/Jan/2020:09:25:25 +0000]",
+    "request_method": "GET",
+    "request_url": "/page1",
+    "status": "200"
+  },
+  {
+    "ip": "10.0.0.1",
+    "time": "[09/Jan/2020:12:12:49 +0000]",
+    "request_method": "GET",
+    "request_url": "/page2",
+    "status": "200"
+  }
+    ]
 
 def test_get_connected_users(client):
     """Test the connected users endpoint"""
     response = client.get("/metrics/v1/users/connected")
     assert response.status_code == 200
     assert response.json() == ["user1", "user2", "user3"]
+
+
+

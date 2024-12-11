@@ -1,4 +1,3 @@
-
 stages:
   - test
   - lint
@@ -11,23 +10,25 @@ test:
   script:
     - make environment
     - pytest --cov=src --cov-report=xml --cov-report=term-missing
+    - coverage html  # Generate an HTML report for better visualization
   artifacts:
     paths:
-      - coverage.xml
+      - coverage.xml  # Store the XML coverage report
+      - htmlcov/      # Store the HTML coverage report directory
     expire_in: 1 week
 
-# Étape de linting
+# Linting Stage
 lint:
   stage: lint
   image: python:3.12
   script:
     - make environment
-    - pylint src/ --fail-under=9
+    - pylint src/
 
-# Étape d'analyse statique
+# Static Analysis Stage
 static-analysis:
   stage: static-analysis
   image: python:3.12
   script:
     - make environment
-    - bandit -r src/ -c .bandit.yml --exclude src/tests,src/core/config.py 
+    - bandit -r src/ -c .bandit.yml --exclude src/tests,src/core/config.py
