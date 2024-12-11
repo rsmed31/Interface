@@ -30,38 +30,44 @@ def count_log(log_file=os.path.abspath("src/logs/wordpress.log")):  # Update the
     try:
         with open(log_file, 'r') as file:
             for line in file:
-                log_entry = log_parser(line)
-                ip = log_entry[0]
+                try:
+                    log_entry = log_parser(line)
+                    ip = log_entry[0]
 
-                # Check if the IP address is not '127.0.0.1'
-                if ip != '127.0.0.1':
-                    status = log_entry[4]
-                    request_method = log_entry[2]
-                    request_url = log_entry[3]
-                    path = request_url.split(' ', 1)[0]
+                    # Check if the IP address is not '127.0.0.1'
+                    if ip != '127.0.0.1':
+                        status = log_entry[4]
+                        request_method = log_entry[2]
+                        request_url = log_entry[3]
+                        path = request_url.split(' ', 1)[0]
 
-                    if path == "/" or path == "/?p=1" or path == "/?page_id=2":
-                        if path == "/":
-                            path = "Home"
-                        elif path == "/?p=1":
-                            path = "Sample Page"
-                        else:
-                            path = "Welcome to Wordpress"
+                        if path == "/" or path == "/?p=1" or path == "/?page_id=2":
+                            if path == "/":
+                                path = "Home"
+                            elif path == "/?p=1":
+                                path = "Sample Page"
+                            else:
+                                path = "Welcome to Wordpress"
 
-                    # Track page visits
-                    page_visits[path] = page_visits.get(path, 0) + 1
+                        # Track page visits
+                        page_visits[path] = page_visits.get(path, 0) + 1
 
-                    # Track IP visits
-                    if ip not in ip_visits:
-                        ip_visits[ip] = []
-                    ip_visits[ip].append(path)
+                        # Track IP visits
+                        if ip not in ip_visits:
+                            ip_visits[ip] = []
+                        ip_visits[ip].append(path)
 
-                    if request_method == 'GET':
-                        if status == '404':
-                            cpt_404 += 1
-                        elif status == '200':
-                            cpt_200 += 1
-                        unique_ips.add(ip)
+                        if request_method == 'GET':
+                            if status == '404':
+                                cpt_404 += 1
+                            elif status == '200':
+                                cpt_200 += 1
+                            unique_ips.add(ip)
+                except Exception as e:
+                    # Log the error and continue with the next line
+                    error_message = f"Error parsing line: {line.strip()}. Error: {e}"
+                    with open('erreur.log', 'a') as error_file:
+                        error_file.write(error_message + '\n')
 
         return {
             'total_ip': len(unique_ips),
@@ -73,7 +79,6 @@ def count_log(log_file=os.path.abspath("src/logs/wordpress.log")):  # Update the
 
     except FileNotFoundError as e:
         error_message = f"Le fichier {log_file} n'a pas été trouvé. Erreur : {e}"
-
         with open('erreur.log', 'a') as error_file:
             error_file.write(error_message + '\n')
 
@@ -107,18 +112,27 @@ def get_last_logs(count: int, log_file=os.path.abspath("src/logs/wordpress.log")
             last_lines = lines[-count:]
             entries = []
             for line in last_lines:
-                log_entry = log_parser(line)
-                entry = {
-                    "ip": log_entry[0],
-                    "time": log_entry[1],
-                    "request_method": log_entry[2],
-                    "request_url": log_entry[3],
-                    "status": log_entry[4],
-                }
-                entries.append(entry)
+                try:
+                    log_entry = log_parser(line)
+                    entry = {
+                        "ip": log_entry[0],
+                        "time": log_entry[1],
+                        "request_method": log_entry[2],
+                        "request_url": log_entry[3],
+                        "status": log_entry[4],
+                    }
+                    entries.append(entry)
+                except Exception as e:
+                    # Log the error and continue with the next line
+                    error_message = f"Error parsing line: {line.strip()}. Error: {e}"
+                    with open('erreur.log', 'a') as error_file:
+                        error_file.write(error_message + '\n')
             return entries
     except Exception as e:
         # Handle exceptions as needed
+        error_message = f"Une erreur s'est produite lors de la lecture du fichier {log_file}. Erreur : {e}"
+        with open('erreur.log', 'a') as error_file:
+            error_file.write(error_message + '\n')
         return []
 
 class LogService:
