@@ -80,6 +80,7 @@ class MonitorTask:
         """Return connected users using psutil.users()."""
         connected_users = []
         for user in psutil.users():
-            user_info = f"{user.name} {user.terminal} {user.host or ''} {time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}"
+            user_info = (f"{user.name} {user.terminal} {user.host or ''} "
+            f"{time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}")
             connected_users.append(user_info)
         return connected_users

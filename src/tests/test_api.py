@@ -1,7 +1,7 @@
 """This module defines tests for the API endpoints"""
 import pytest
 from fastapi.testclient import TestClient
-from domain.services.logservice import count_log, log_parser
+from domain.services.logservice import count_log
 from server import create_app
 from monitor import MonitorTask
 import os

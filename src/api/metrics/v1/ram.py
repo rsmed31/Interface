@@ -13,4 +13,4 @@ async def get_ram_usage(request: Request) -> GetRamResponseSchema:
             raise HTTPException(status_code=500, detail="RAM stats not available")
         return GetRamResponseSchema(**ram_stats)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e

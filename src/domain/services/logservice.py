@@ -85,8 +85,10 @@ def count_log(log_file=os.path.abspath("src/logs/wordpress.log")):  # Update the
             'ip_visits': {}  # Return empty IP visits
         }
     except Exception as e:
-        error_message = f"Une erreur s'est produite lors de la lecture du fichier {log_file}. Erreur : {e}"
-
+        error_message = (
+            f"Une erreur s'est produite lors de la lecture du fichier {log_file}. "
+            f"Erreur : {e}"
+        )
         with open('erreur.log', 'a') as error_file:
             error_file.write(error_message + '\n')
 
