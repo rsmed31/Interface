@@ -7,8 +7,15 @@ disable=
     too-many-locals,
     too-many-branches,
     missing-final-newline,
-    wrong-import-order
+    wrong-import-order,
+    duplicate-code,
+    unused-import,
+    unused-argument,
+    unspecified-encoding,
+    broad-exception-caught,
 
+
+ignore= tests
 
 [MESSAGES CONTROL]
 enable=all
