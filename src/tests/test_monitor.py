@@ -55,6 +55,7 @@ def test_get_ram_usage():
     assert ram_stats["available"] >= 0
     assert ram_stats["used"] >= 0
     assert 0 <= ram_stats["percent"] <= 100
+    
 def test_get_disk_usage():
     """Test disk usage getter"""
     monitor = MonitorTask()
