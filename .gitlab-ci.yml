@@ -10,10 +10,6 @@ variables:
 
 default:
   image: python:3.12
-  cache:
-    paths:
-      - coverage.xml  # Cache the coverage report for reuse in the coverage stage
-    key: "$CI_COMMIT_REF_SLUG"
 
 # Test Stage
 test:
