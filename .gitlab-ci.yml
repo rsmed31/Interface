@@ -5,7 +5,7 @@ stages:
   - static-analysis
 
 variables:
-  COVERAGE_OPTIONS: "--cov=src --cov-report=xml --cov-report=term-missing"
+  COVERAGE_OPTIONS: "--cov-config=.coveragerc --cov=src src/tests/ --cov-report=xml --cov-report=term-missing"
   BANDIT_OPTIONS: "-r src/ -c .bandit.yml --exclude src/tests,src/core/config.py"
 
 default:
