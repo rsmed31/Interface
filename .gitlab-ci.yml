@@ -1,26 +1,45 @@
 stages:
   - test
+  - coverage
   - lint
   - static-analysis
+
+variables:
+  COVERAGE_OPTIONS: "--cov=src --cov-report=xml --cov-report=term-missing"
+  BANDIT_OPTIONS: "-r src/ -c .bandit.yml --exclude src/tests,src/core/config.py"
+
+default:
+  image: python:3.12
 
 # Test Stage
 test:
   stage: test
-  image: python:3.12
   script:
     - make environment
-    - pytest --cov=src --cov-report=xml --cov-report=term-missing
+    - pytest $COVERAGE_OPTIONS
+  artifacts:
+    paths:
+      - coverage.xml  # Pass coverage data to the next stage
+    expire_in: 1 week
+
+# Coverage Stage
+coverage:
+  stage: coverage
+  script:
+    - make environment
+    - pytest $COVERAGE_OPTIONS
     - coverage html  # Generate an HTML report for better visualization
   artifacts:
     paths:
-      - coverage.xml  # Store the XML coverage report
       - htmlcov/      # Store the HTML coverage report directory
     expire_in: 1 week
+  needs:
+    - test
+  
 
 # Linting Stage
 lint:
   stage: lint
-  image: python:3.12
   script:
     - make environment
     - pylint src/
@@ -28,7 +47,6 @@ lint:
 # Static Analysis Stage
 static-analysis:
   stage: static-analysis
-  image: python:3.12
   script:
     - make environment
-    - bandit -r src/ -c .bandit.yml --exclude src/tests,src/core/config.py
+    - bandit $BANDIT_OPTIONS
