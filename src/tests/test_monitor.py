@@ -3,6 +3,23 @@ from monitor import MonitorTask
 import psutil
 import threading
 import time
+from unittest.mock import patch, Mock
+
+
+@pytest.fixture
+def mock_cpu_freq():
+    with patch('psutil.cpu_freq', return_value=Mock(current=2500.0)) as mock:
+        yield mock
+
+@pytest.fixture
+def mock_users():
+    """Mock connected users data"""
+    mock_data = [
+        Mock(name='user1', terminal='pts/0', host='localhost', started=time.time()),
+        Mock(name='user2', terminal='pts/1', host='remote', started=time.time())
+    ]
+    with patch('psutil.users', return_value=mock_data) as mock:
+        yield mock
 
 def test_monitor_task_init():
     """Test MonitorTask initialization"""
@@ -65,24 +82,28 @@ def test_get_disk_usage():
 
 def test_get_processor_name():
     """Test processor name getter"""
-    monitor = MonitorTask()
-    processor_name = monitor.get_processor_name()
-    assert isinstance(processor_name, str)
-    assert len(processor_name) > 0
+    mock_processor = "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz"
+    
+    with patch('platform.processor', return_value=mock_processor):
+        monitor = MonitorTask()
+        processor_name = monitor.get_processor_name()
+        assert isinstance(processor_name, str)
+        assert processor_name == mock_processor
+        assert len(processor_name) > 0
 
-def test_get_cpu_frequency():
+def test_get_cpu_frequency(mock_cpu_freq):
     """Test CPU frequency getter"""
     monitor = MonitorTask()
     frequency = monitor.get_cpu_frequency()
     assert isinstance(frequency, float)
-    assert frequency > 0
+    assert frequency == 2500.0
 
-def test_get_connected_users():
+def test_get_connected_users(mock_users):
     """Test connected users getter"""
     monitor = MonitorTask()
     users = monitor.get_connected_users()
     assert isinstance(users, list)
-    # Each user should be a string containing user info
+    assert len(users) == 2
     for user in users:
         assert isinstance(user, str)
 
