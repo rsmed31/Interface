@@ -9,7 +9,7 @@ variables:
   BANDIT_OPTIONS: "-r src/ -c .bandit.yml --exclude src/tests,src/core/config.py"
 
 default :
-  image: python 3.12
+  image: python:3.12
 
 workflow:
   rules:
