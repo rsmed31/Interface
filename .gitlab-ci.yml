@@ -11,6 +11,11 @@ variables:
 default:
   image: python:3.12
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
 # Test Stage
 test:
   stage: test
