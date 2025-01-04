@@ -1,4 +1,5 @@
 """This module defines tests for the API endpoints"""
+
 import pytest
 from fastapi.testclient import TestClient
 from domain.services.logservice import count_log, LogService
@@ -9,6 +10,7 @@ import os
 
 class MonitorTaskFake(MonitorTask):
     """Mock monitor with deterministic test values"""
+
     def __init__(self):
         """Initialize with fake data"""
         self.interval = 0
@@ -18,13 +20,13 @@ class MonitorTaskFake(MonitorTask):
             "total": 250790436864,
             "used": 100316192768,
             "free": 150474244096,
-            "percent": 40.0
+            "percent": 40.0,
         }
         self.ram_usage = {
             "total": 16777216,
             "available": 8388608,
             "used": 8388608,
-            "percent": 50.0
+            "percent": 50.0,
         }
         self.processor_name = "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz"
         self.cpu_frequency = 1800.0
@@ -54,7 +56,7 @@ class MonitorTaskFake(MonitorTask):
         """Return log data from logs/wordpress.log"""
         log_file_path = os.path.abspath("src/logs/wordpress.log")
         if os.path.exists(log_file_path):
-            with open(log_file_path, 'r') as file:
+            with open(log_file_path, "r") as file:
                 return file.readlines()
         return []
 
@@ -83,10 +85,7 @@ def test_get_cpu_usage(client):
     """Test CPU usage endpoint"""
     response = client.get("/metrics/v1/cpu/usage")
     assert response.status_code == 200
-    assert response.json() == [
-        {"id": 0, "usage": "10"},
-        {"id": 1, "usage": "12"}
-    ]
+    assert response.json() == [{"id": 0, "usage": "10"}, {"id": 1, "usage": "12"}]
 
 
 def test_get_cpu_core(client):
@@ -96,7 +95,7 @@ def test_get_cpu_core(client):
     assert response.json() == {
         "processor_name": "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz",
         "number_of_cores": 2,
-        "frequency": 1800.0
+        "frequency": 1800.0,
     }
 
 
@@ -108,85 +107,88 @@ def test_get_disk_usage(client):
         "total": 250790436864,
         "used": 100316192768,
         "free": 150474244096,
-        "percent": 40.0
+        "percent": 40.0,
     }
+
 
 def test_get_ram_usage(client):
     """Test RAM usage endpoint"""
     response = client.get("/metrics/v1/ram/usage")
     assert response.status_code == 200
-    assert response.json()=={
+    assert response.json() == {
         "total": 16777216,
-            "available": 8388608,
-            "used": 8388608,
-            "percent": 50.0
+        "available": 8388608,
+        "used": 8388608,
+        "percent": 50.0,
     }
+
 
 def test_get_log_data(client):
     """Test log data endpoint"""
     response = client.get("/metrics/v1/log/logs")
     assert response.status_code == 200
     assert response.json() == {
-        "nbip": 5,
+        "nbip": 9,
         "failed": 7,
         "succeed": 20,
-        "nbwebsites": {
-            "Home": 6,
-            "/page1": 6,
-            "/page2": 8,
-            "/page3": 7
-        },
+        "nbwebsites": {"Home": 6, "/page1": 6, "/page3": 7, "/page2": 8},
         "ip_visits": {
-            "192.168.1.10": ["Home", "/page1", "/page3", "Home", "Home", "/page1"],
-            "10.0.0.1": ["/page2", "/page1", "/page3", "/page2", "/page1", "/page2"],
-            "172.16.0.1": ["/page2", "Home", "/page3", "/page1", "Home"],
+            "192.168.1.10": ["Home", "/page1", "/page3", "Home", "Home"],
+            "10.0.0.1": ["/page2", "/page1", "/page3", "/page1"],
+            "172.16.0.1": ["/page2", "Home", "/page1", "Home"],
+            "13.246.114.251": ["/page3"],
             "203.0.113.1": ["/page2", "/page3", "/page1", "/page3", "/page2"],
-            "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"]
-        }
+            "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"],
+            "20.74.211.96": ["/page2"],
+            "34.130.107.20": ["/page1"],
+            "23.90.233.242": ["/page2"],
+        },
     }
+
 
 def test_get_recent_logs_with_correct_data(client):
     """Test recent logs endpoint with correct data"""
     response = client.get("/metrics/v1/log/logs/recent")
     assert response.status_code == 200
-    assert len(response.json()) == 5  
+    assert len(response.json()) == 5
     assert response.json() == [
         {
             "ip": "172.16.0.1",
             "time": "[08/Jan/2020:11:15:43 +0000]",
             "request_method": "GET",
             "request_url": "/",
-            "status": "200"
+            "status": "200",
         },
         {
             "ip": "203.0.113.1",
             "time": "[08/Jan/2020:13:50:11 +0000]",
             "request_method": "GET",
             "request_url": "/page2",
-            "status": "200"
+            "status": "200",
         },
         {
             "ip": "198.51.100.1",
             "time": "[09/Jan/2020:07:40:50 +0000]",
             "request_method": "GET",
             "request_url": "/page3",
-            "status": "404"
+            "status": "404",
         },
         {
             "ip": "192.168.1.10",
             "time": "[09/Jan/2020:09:25:25 +0000]",
             "request_method": "GET",
             "request_url": "/page1",
-            "status": "200"
+            "status": "200",
         },
         {
             "ip": "10.0.0.1",
             "time": "[09/Jan/2020:12:12:49 +0000]",
             "request_method": "GET",
             "request_url": "/page2",
-            "status": "200"
-        }
+            "status": "200",
+        },
     ]
+
 
 def test_get_connected_users(client):
     """Test the connected users endpoint"""
