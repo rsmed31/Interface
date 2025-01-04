@@ -2,9 +2,10 @@
 This module defines a controller class for fetching Logs from a monitoring task.
 """
 
-from domain.models import Log
-import apache_log_parser
 import os
+from domain.models import Log
+from pathlib import Path
+import apache_log_parser
 from typing import List, Dict
 
 log_format = '%h %l %u %t "%r" %>s %b "%{Referer}i" "%{User-Agent}i"'
@@ -23,9 +24,7 @@ def log_parser(log_entry):
     return result_log
 
 
-def count_log(
-    log_file=os.path.abspath("src/logs/wordpress.log"),
-):  # Update the default path here
+def count_log(log_file: Path) -> Dict:
     unique_ips = set()
     cpt_404 = 0
     cpt_200 = 0
@@ -33,7 +32,7 @@ def count_log(
     ip_visits = {}  # New dictionary to track IP visits
 
     try:
-        with open(log_file, "r") as file:
+        with log_file.open("r") as file:
             for line in file:
                 try:
                     log_entry = log_parser(line)
@@ -111,11 +110,9 @@ def count_log(
         }
 
 
-def get_last_logs(
-    count: int, log_file=os.path.abspath("src/logs/wordpress.log")
-) -> List[Dict]:
+def get_last_logs(count: int, log_file: Path) -> List[Dict]:
     try:
-        with open(log_file, "r") as file:
+        with log_file.open("r") as file:
             lines = file.readlines()
             last_lines = lines[-count:]
             entries = []
@@ -149,10 +146,10 @@ def get_last_logs(
 class LogService:
 
     def __init__(self):
-        pass
+        self.log_path = Path(os.getenv("LOG_PATH", "/var/log/apache2/access.log"))
 
     async def get_log(self) -> Log:
-        result = count_log()  # Use the default path
+        result = count_log(self.log_path)
         return Log(
             nbip=result["total_ip"],
             succeed=result["good"],
@@ -162,7 +159,7 @@ class LogService:
         )
 
     async def get_recent_logs(self, count: int) -> List[Dict]:
-        result = get_last_logs(count)
+        result = get_last_logs(count, self.log_path)
         return result
 
     def __str__(self):
