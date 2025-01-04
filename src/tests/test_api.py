@@ -145,7 +145,6 @@ def test_get_log_data(client):
         },
     }
 
-
 def test_get_recent_logs_with_correct_data(client):
     """Test recent logs endpoint with correct data"""
     response = client.get("/metrics/v1/log/logs/recent")
