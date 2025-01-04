@@ -28,6 +28,7 @@ class MonitorTaskFake(MonitorTask):
         }
         self.processor_name = "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz"
         self.cpu_frequency = 1800.0
+        self.logservice = LogService("src/logs/wordpress.log")
 
     def monitor(self):
         """Mock monitor method"""
@@ -63,7 +64,6 @@ def test_app():
     """Create a test application with mocked monitor"""
     app = create_app()
     app.state.monitortask = MonitorTaskFake()
-    app.state.logservice = LogService(log_path="src/logs/wordpress.log");
     return app
 
 

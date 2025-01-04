@@ -146,7 +146,11 @@ def get_last_logs(count: int, log_file: Path) -> List[Dict]:
 class LogService:
 
     def __init__(self, log_path: str = None):
-        self.log_path = Path(log_path) if log_path else Path(os.getenv("LOG_PATH", "/var/log/apache2/access.log"))
+        self.log_path = (
+            Path(log_path)
+            if log_path
+            else Path(os.getenv("LOG_PATH", "/var/log/apache2/access.log"))
+        )
 
     async def get_log(self) -> Log:
         result = count_log(self.log_path)

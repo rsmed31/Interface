@@ -13,6 +13,7 @@ class MonitorTaskFake(MonitorTask):
 
     def __init__(self):
         self.cpu_percent = [-1]  # Invalid CPU percent as a list
+        self.logservice = LogService("src/logs/wordpressStatic.log")
 
     def monitor(self):
         """Mock monitor method"""
@@ -54,7 +55,6 @@ def test_app():
     """Create a test application with mocked monitor"""
     app = create_app()
     app.state.monitortask = MonitorTaskFake()
-    app.state.logservice = LogService(log_path="src/logs/wordpressStatic.log")
     return app
 
 

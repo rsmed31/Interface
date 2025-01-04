@@ -27,7 +27,7 @@ async def get_log(request: Request) -> GetLogResponseSchema:
     Returns:
         GetLogResponseSchema: Log data as per the response model.
     """
-    return await request.app.state.logservice.get_log()
+    return await request.app.state.monitortask.logservice.get_log()
 
 @log_router.get(
     "/logs/recent",
@@ -44,4 +44,4 @@ async def get_recent_logs(request: Request) -> List[LogEntrySchema]:
     Returns:
         List[LogEntrySchema]: A list of the last 5 log entries.
     """
-    return await request.app.state.logservice.get_recent_logs(5)
+    return await request.app.state.monitortask.logservice.get_recent_logs(5)
