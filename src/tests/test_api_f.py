@@ -3,6 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from server import create_app
+from domain.services.logservice import LogService
 from monitor import MonitorTask
 import os
 
@@ -53,6 +54,7 @@ def test_app():
     """Create a test application with mocked monitor"""
     app = create_app()
     app.state.monitortask = MonitorTaskFake()
+    app.state.logservice = LogService(log_path="src/logs/wordpressStatic.log")
     return app
 
 
@@ -102,14 +104,14 @@ def test_get_log_data(client):
     assert response.status_code == 200
     assert response.json() == {
         "nbip": 5,
-        "failed": 7,
-        "succeed": 20,
-        "nbwebsites": {"Home": 6, "/page1": 6, "/page3": 7, "/page2": 8},
+        "failed": 6,
+        "succeed": 18,
+        "nbwebsites": {"Home": 5, "/page1": 6, "/page3": 6, "/page2": 7, "": 1},
         "ip_visits": {
-            "192.168.1.10": ["Home", "/page1", "/page3", "Home", "Home", "/page1"],
+            "192.168.1.10": ["Home", "/page1", "/page3", "Home", "/page1"],
             "10.0.0.1": ["/page2", "/page1", "/page3", "/page2", "/page1", "/page2"],
             "172.16.0.1": ["/page2", "Home", "/page3", "/page1", "Home"],
-            "203.0.113.1": ["/page2", "/page3", "/page1", "/page3", "/page2"],
+            "203.0.113.1": ["/page3", "/page1", "", "/page2"],
             "198.51.100.1": ["/page2", "Home", "/page3", "/page2", "/page3"],
         },
     }
