@@ -145,6 +145,7 @@ def test_get_log_data(client):
         },
     }
 
+
 def test_get_recent_logs_with_correct_data(client):
     """Test recent logs endpoint with correct data"""
     response = client.get("/metrics/v1/log/logs/recent")
@@ -173,14 +174,14 @@ def test_get_recent_logs_with_correct_data(client):
             "status": "404",
         },
         {
-            "ip": "192.168.1.10",
+            "ip": "34.130.107.20",
             "time": "[09/Jan/2020:09:25:25 +0000]",
             "request_method": "GET",
             "request_url": "/page1",
             "status": "200",
         },
         {
-            "ip": "10.0.0.1",
+            "ip": "23.90.233.242",
             "time": "[09/Jan/2020:12:12:49 +0000]",
             "request_method": "GET",
             "request_url": "/page2",
