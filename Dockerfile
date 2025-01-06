@@ -4,7 +4,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Define environment variables
-ENV LOG_PATH /app/logs/wordpress.log
+ENV LOG_PATH /var/log/apache2/access.log
 
 # Copy requirements and install dependencies
 COPY requirements.dev.txt .
@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.dev.txt
 COPY . .
 
 # Define volume for logs
-VOLUME ["/app/logs"]
+VOLUME ["/var/log/apache2"]
 
 # Expose the port for the application
 EXPOSE 8000
