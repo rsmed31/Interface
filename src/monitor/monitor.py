@@ -1,7 +1,10 @@
 """This module defines a `MonitorTask` class for monitoring metrics on a host."""
+
 import time
 import psutil
 import platform
+import os
+from domain.services.logservice import LogService
 
 
 class MonitorTask:
@@ -24,6 +27,9 @@ class MonitorTask:
         self.cpu_percent = [0] * self.num_cores
         self.disk_usage = {}
         self.ram_usage = {}
+        self.logservice = LogService(
+            log_path=os.getenv("LOG_PATH", "/var/log/apache2/access.log")
+        )
 
     def monitor(self):
         """Continuously monitor and store the result in an attribute."""
@@ -38,7 +44,7 @@ class MonitorTask:
 
     def update_disk_usage(self):
         """Fetch disk usage statistics."""
-        disk_info = psutil.disk_usage('/')
+        disk_info = psutil.disk_usage("/")
         self.disk_usage = {
             "total": disk_info.total,
             "used": disk_info.used,
@@ -64,7 +70,7 @@ class MonitorTask:
 
     def get_ram_usage(self):
         """Return the latest RAM usage stats."""
-        if not hasattr(self, 'ram_usage'):
+        if not hasattr(self, "ram_usage"):
             self.update_ram_usage()
         return self.ram_usage
 
@@ -80,7 +86,9 @@ class MonitorTask:
         """Return connected users using psutil.users()."""
         connected_users = []
         for user in psutil.users():
-            user_info = (f"{user.name} {user.terminal} {user.host or ''} "
-            f"{time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}")
+            user_info = (
+                f"{user.name} {user.terminal} {user.host or ''} "
+                f"{time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}"
+            )
             connected_users.append(user_info)
         return connected_users

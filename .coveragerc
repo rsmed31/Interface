@@ -1,0 +1,20 @@
+[run]
+source = src/
+omit = 
+    src/tests/*
+    src/**/test_*.py
+    **/site-packages/*
+    **/__pycache__/*
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass
+
+[paths]
+source =
+    src/
+    */site-packages/

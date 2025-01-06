@@ -4,6 +4,8 @@ This module contains a FastAPI application with various routes and middleware.
 It initializes the FastAPI app, sets up routers, event listeners, and exception handlers, and
 creates a monitoring thread for fetching metrics.
 """
+
+import os
 import threading
 from typing import List
 from fastapi import FastAPI, Request
@@ -17,6 +19,7 @@ from core.config import get_config
 from monitor import MonitorTask
 from contextlib import asynccontextmanager
 import asyncio
+
 
 def init_routers(fastapi: FastAPI) -> None:
     """
@@ -38,6 +41,7 @@ def init_listeners(fastapi: FastAPI) -> None:
     Args:
         fastapi (FastAPI): The FastAPI application to set up event listeners and handlers for.
     """
+
     # Exception handler
     @fastapi.exception_handler(CustomException)
     async def custom_exception_handler(_request: Request, exc: CustomException):
@@ -45,6 +49,7 @@ def init_listeners(fastapi: FastAPI) -> None:
             status_code=exc.code,
             content={"error_code": exc.error_code, "message": exc.message},
         )
+
 
 # Start monitoring thread
 @asynccontextmanager
@@ -57,6 +62,7 @@ async def on_start_up(fastapi: FastAPI):
     thread = threading.Thread(target=fastapi.state.monitortask.monitor, daemon=True)
     thread.start()
     yield
+
 
 def make_middleware() -> List[Middleware]:
     """
@@ -93,7 +99,7 @@ def create_app() -> FastAPI:
         docs_url="/docs",
         redoc_url="/redoc",
         middleware=make_middleware(),
-        lifespan=on_start_up
+        lifespan=on_start_up,
     )
     fastapi.state.version = config.version
     init_routers(fastapi)
