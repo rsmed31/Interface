@@ -9,7 +9,7 @@ stages:
 variables:
   COVERAGE_OPTIONS: "--cov-config=.coveragerc --cov=src src/tests/ --cov-report=xml --cov-report=term-missing"
   BANDIT_OPTIONS: "-r src/ -c .bandit.yml --exclude src/tests,src/core/config.py"
-  CI_REGISTRY_IMAGE: devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerfaceui
+  CI_REGISTRY_IMAGE: devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
