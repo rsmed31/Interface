@@ -26,13 +26,12 @@ services:
     command: ["dockerd-entrypoint.sh"]
 
 default:
-  image: python:3.12
+  image: devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/cicontainer:test
 
 # Test Stage
 test:
   stage: test
   script:
-    - make environment
     - pytest $COVERAGE_OPTIONS
   artifacts:
     paths:
@@ -43,7 +42,6 @@ test:
 coverage:
   stage: coverage
   script:
-    - make environment
     - pytest $COVERAGE_OPTIONS
     - coverage html  # Generate an HTML report for better visualization
   artifacts:
@@ -58,14 +56,12 @@ coverage:
 lint:
   stage: lint
   script:
-    - make environment
     - pylint src/
 
 # Static Analysis Stage
 static-analysis:
   stage: static-analysis
   script:
-    - make environment
     - bandit $BANDIT_OPTIONS
 
 build:
