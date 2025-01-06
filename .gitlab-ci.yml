@@ -68,8 +68,6 @@ static-analysis:
     - make environment
     - bandit $BANDIT_OPTIONS
 
-
-
 build:
   image: docker:19.03.12
   stage: build
@@ -77,15 +75,8 @@ build:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
-
-deploy:
-  stage: deploy
-  before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - docker pull "$CI_REGISTRY_IMAGE"  
     - docker tag "$CI_REGISTRY_IMAGE" "$CI_REGISTRY_IMAGE:latest"
     - docker push "$CI_REGISTRY_IMAGE:latest"  
+    - docker push "$CI_REGISTRY_IMAGE"
   only:
     - main
