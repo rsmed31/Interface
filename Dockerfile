@@ -7,8 +7,8 @@ WORKDIR /app
 ENV  LOG_PATH /app/logs/access.log
 
 # Copy requirements and install dependencies
-COPY requirements.dev.txt .
-RUN pip install --no-cache-dir -r requirements.dev.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code
 COPY . .
