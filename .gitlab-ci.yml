@@ -3,18 +3,30 @@ stages:
   - coverage
   - lint
   - static-analysis
+  - build
+  - deploy
 
 variables:
   COVERAGE_OPTIONS: "--cov-config=.coveragerc --cov=src src/tests/ --cov-report=xml --cov-report=term-missing"
   BANDIT_OPTIONS: "-r src/ -c .bandit.yml --exclude src/tests,src/core/config.py"
-
-default :
-  image: python:3.12
+  CI_REGISTRY_IMAGE: devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
 
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
+
+
+services:
+  - name: docker:dind
+    entrypoint: ["env", "-u", "DOCKER_HOST"]
+    command: ["dockerd-entrypoint.sh"]
+
+default:
+  image: python:3.12
 
 # Test Stage
 test:
@@ -55,3 +67,25 @@ static-analysis:
   script:
     - make environment
     - bandit $BANDIT_OPTIONS
+
+
+
+build:
+  image: docker:19.03.12
+  stage: build
+  before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+
+deploy:
+  stage: deploy
+  before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker pull "$CI_REGISTRY_IMAGE"  
+    - docker tag "$CI_REGISTRY_IMAGE" "$CI_REGISTRY_IMAGE:latest"
+    - docker push "$CI_REGISTRY_IMAGE:latest"  
+  only:
+    - main
