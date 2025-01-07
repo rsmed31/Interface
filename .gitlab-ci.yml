@@ -31,6 +31,7 @@ test:
   stage: test
   script:
     - pytest $COVERAGE_OPTIONS
+  coverage: '/\d+\.\d+%/'  # Extract coverage percentage
   artifacts:
     paths:
       - coverage.xml  # Pass coverage data to the next stage
@@ -45,6 +46,7 @@ coverage:
   artifacts:
     paths:
       - htmlcov/      # Store the HTML coverage report directory
+      - coverage.xml
     expire_in: 1 week
   needs:
     - test
@@ -53,13 +55,21 @@ coverage:
 lint:
   stage: lint
   script:
-    - pylint src/
+    - pylint src/ --output-format=text | tee pylint-report.txt
+  artifacts:
+    paths:
+      - pylint-report.txt
+    expire_in: 1 week
 
 # Static Analysis Stage
 static-analysis:
   stage: static-analysis
   script:
-    - bandit $BANDIT_OPTIONS
+    - bandit $BANDIT_OPTIONS | tee bandit-report.txt
+  artifacts:
+    paths:
+      - bandit-report.txt
+    expire_in: 1 week
 
 # Build Stage
 build:
