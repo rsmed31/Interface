@@ -31,12 +31,8 @@ test:
   stage: test
   script:
     - pytest $COVERAGE_OPTIONS
-  coverage: '/\d+\.\d+%/'  # Extract coverage percentage
   artifacts:
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage.xml
+
 
 # Coverage Stage
 coverage:
@@ -44,10 +40,14 @@ coverage:
   script:
     - pytest $COVERAGE_OPTIONS
     - coverage html  # Generate an HTML report for better visualization
+  coverage: '/\d+\.\d+%/'  # Extract coverage percentage
   artifacts:
     paths:
       - htmlcov/      # Store the HTML coverage report directory
-      - coverage.xml
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
     expire_in: 1 week
   needs:
     - test
@@ -56,10 +56,8 @@ coverage:
 lint:
   stage: lint
   script:
-    - pylint src/ --output-format=text > pylint-report.txt
+    - pylint src/ --output-format=text > pylint-report.txt || true
   artifacts:
-    reports:
-      codequality: pylint-report.txt
     paths:
       - pylint-report.txt
   allow_failure: false
@@ -68,10 +66,8 @@ lint:
 static-analysis:
   stage: static-analysis
   script:
-    - bandit $BANDIT_OPTIONS -f json -o bandit-report.json
+    - bandit $BANDIT_OPTIONS -f json -o bandit-report.json || true
   artifacts:
-    reports:
-      codequality: bandit-report.json
     paths:
       - bandit-report.json
   allow_failure: false

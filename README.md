@@ -2,10 +2,11 @@
 
 # Project Status
 
+
 [![Pipeline Status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/pipeline.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/pipelines)
-[![Coverage](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/graphs/main)
-[![Lint Status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs/artifacts/main/raw/pylint-report.txt?job=lint)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs)
-[![Static Analysis](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs/artifacts/main/raw/bandit-report.json?job=static-analysis)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs)
+[![Coverage](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg?job=test&min_good=90&min_acceptable=75)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/graphs/main)
+[![Lint](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/pipeline.svg?job=lint)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs)
+[![Static Analysis](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/pipeline.svg?job=static-analysis)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs)
 
 
 
