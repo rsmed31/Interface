@@ -1,5 +1,5 @@
 # Monitor Them
-[![Coverage Status](https://devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg)](https://devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/-/jobs?scope=success&name=coverage)
+[![Coverage Status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs?scope=success&name=coverage)
 
 [![Pipeline Status](https://gitlab.com/%{project_path}/badges/%{default_branch}/pipeline.svg)]https://gitlab.com/%{project_path}/-/commits/%{default_branch})
 
