@@ -3,6 +3,7 @@
 ![Lint](https://img.shields.io/badge/lint-passing-brightgreen)
 ![Coverage](https://img.shields.io/badge/coverage-passing-brightgreen)
 
+[![pipeline status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/pipeline.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/commits/main)
 
 A Server Monitoring tool :
 * Connecting to all the machines "to be monitored",through SSH.
