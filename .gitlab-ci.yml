@@ -32,7 +32,9 @@ test:
   script:
     - pytest $COVERAGE_OPTIONS
   artifacts:
-
+    paths:
+      - coverage.xml
+    expire_in: 1 week
 
 # Coverage Stage
 coverage:
