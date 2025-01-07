@@ -72,4 +72,3 @@ build:
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
   only:
     - main
-
