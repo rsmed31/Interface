@@ -1,7 +1,5 @@
 # Monitor Them
-
-![Lint](https://img.shields.io/badge/lint-passing-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-passing-brightgreen)
+[![Coverage Status](https://devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg)](https://devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/-/jobs?scope=success&name=coverage)
 
 [![pipeline status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/pipeline.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/commits/main)
 
