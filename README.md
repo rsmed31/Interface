@@ -1,12 +1,8 @@
 # Monitor Them
-[![Coverage Status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/jobs?scope=success&name=coverage)
 
-[![Pipeline Status](https://gitlab.com/%{project_path}/badges/%{default_branch}/pipeline.svg)]https://gitlab.com/%{project_path}/-/commits/%{default_branch})
 
 [![pipeline status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/pipeline.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/pipelines?page=1&scope=all&ref=main)
 [![coverage report](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/coverage.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/commits/main)
-
-[![lint status](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/badges/main/lint.svg)](https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface/-/pipelines?page=1&scope=all&ref=main)
 
 [![Pylint Score](https://devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/-/jobs/artifacts/main/raw/pylint.svg?job=lint)](https://devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/-/commits/main)
 
