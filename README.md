@@ -21,3 +21,11 @@ A Server Monitoring tool :
 Run project with `make debug` and consult url in log for api doc at `/docs` or `/redoc`.
 
 Application is running 2 threads, one for the API to expose metrics and one for collecting metrics.
+
+Prerequisites 
+
+Before you continue, ensure you have met the following requirements:
+
+* You have installed the latest version of Python
+* You are using a Linux Machine. Windows is not currently supported.
+* 
