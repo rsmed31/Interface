@@ -26,52 +26,50 @@ services:
 default:
   image: devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface/cicontainer:test
 
+# Test Stage
 test:
   stage: test
   script:
     - pytest $COVERAGE_OPTIONS
   artifacts:
     paths:
-      - coverage.xml
+      - coverage.xml  # Pass coverage data to the next stage
     expire_in: 1 week
 
+# Coverage Stage
 coverage:
   stage: coverage
   script:
     - pytest $COVERAGE_OPTIONS
-    - coverage html
+    - coverage html  # Generate an HTML report for better visualization
   artifacts:
     paths:
-      - htmlcov/
+      - htmlcov/      # Store the HTML coverage report directory
     expire_in: 1 week
   needs:
     - test
 
+# Linting Stage
 lint:
   stage: lint
   script:
-    - pylint src/ | tee pylint.txt
-    - score=$(sed -n 's/^Your code has been rated at \([0-9.]*\)\/10.*$/\1/p' pylint.txt)
-    - echo "Pylint score $score"
-    - 'echo "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"90\" height=\"20\"><linearGradient id=\"b\" x2=\"0\" y2=\"100%\"><stop offset=\"0\" stop-color=\"#bbb\" stop-opacity=\".1\"/><stop offset=\"1\" stop-opacity=\".1\"/></linearGradient><mask id=\"a\"><rect width=\"90\" height=\"20\" rx=\"3\" fill=\"#fff\"/></mask><g mask=\"url(#a)\"><path fill=\"#555\" d=\"M0 0h50v20H0z\"/><path fill=\"#4c1\" d=\"M50 0h40v20H50z\"/><path fill=\"url(#b)\" d=\"M0 0h90v20H0z\"/></g><g fill=\"#fff\" text-anchor=\"middle\" font-family=\"DejaVu Sans,Verdana,Geneva,sans-serif\" font-size=\"11\"><text x=\"25\" y=\"15\" fill=\"#010101\" fill-opacity=\".3\">pylint</text><text x=\"25\" y=\"14\">pylint</text><text x=\"70\" y=\"15\" fill=\"#010101\" fill-opacity=\".3\">$score</text><text x=\"70\" y=\"14\">$score</text></g></svg>" > pylint.svg'
-  artifacts:
-    paths:
-      - pylint.svg
-    expire_in: 1 week
+    - pylint src/
 
+# Static Analysis Stage
 static-analysis:
   stage: static-analysis
   script:
     - bandit $BANDIT_OPTIONS
 
+# Build Stage
 build:
   image: docker:19.03.12
   stage: build
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker tag "$CI_REGISTRY_IMAGE" "$CI_REGISTRY_IMAGE:latest"
-    - docker push "$CI_REGISTRY_IMAGE:latest"  
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
   only:
     - main
+
