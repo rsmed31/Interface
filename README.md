@@ -35,9 +35,17 @@ To install the project on your machine, follow the steps :
 
 Open a terminal and use the following command : **_git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git_** 
 
-### 2. Install dependencies
+### 2. Install virtual environment and dependencies
 
-To be able to run the project, you will need a python virtual environment and some libraries used in the project. To install them, use the command : **_pip install -r requirements.txt_**
+To be able to run the project, you will need a python virtual environment and some libraries used in the project. 
+
+#### a) Virtual Environment 
+
+
+
+#### b) Dependencies
+
+All of the dependencies used in the project have been written in a file name 'requirements.txt'. To install them, choose the directory \printerface and use the command : **_pip install -r requirements.txt_**
 
 ## Run project
 
