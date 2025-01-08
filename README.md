@@ -24,7 +24,7 @@ Application is running 2 threads, one for the API to expose metrics and one for 
 
 Before you continue, ensure you have met the following requirements:
 
-* You have installed the latest version of Python
+* You have installed the latest version of Python, Docker
 * You are using a Linux Machine. Windows is not currently supported.
 
 ## Installation
@@ -48,7 +48,7 @@ To be able to run the project, you will need a python virtual environment and so
 
 #### b) Dependencies
 
-All of the dependencies used in the project have been written in a file name 'requirements.txt'. To install them, choose the directory `\printerface` in your terminal and use the command : 
+All of the dependencies used in the project have been written in a file name `requirements.txt`. To install them, choose the directory `\printerface` in your terminal and use the command : 
 ```sh
 pip install -r requirements.txt 
 ```
@@ -57,14 +57,28 @@ pip install -r requirements.txt
 
 ### Locally 
 
-To run the project on your machine, you first need to activate your virtual environment. Access **_/printerface_** and use the command : 
+To run the project on your machine, you first need to activate your virtual environment. Access `/printerface` and use the command : 
 ```sh
 source env/bin/activate
 ```
-Once you've done that, run the command : **_
+Once you've done that, run the command : 
+```sh
+python3 src/main.python
+```
 
 ### Using Docker
 
+You can run the project only using Docker. Open a terminal and run the command : 
 
+```sh
+docker run -d --name printerface-container -p 80:8000 /var/logs:/app/log
+```
+Explanation on the command : 
+
+* `printerface` : That's the name of the docker container
+* `80` : server port
+* `8000` : docker container port
+* `/var/logs` : path to logs on the server
+* `/app/logs` : path to logs on the docker container
 
 
