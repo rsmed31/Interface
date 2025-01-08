@@ -20,8 +20,23 @@ Run project with `make debug` and consult url in log for api doc at `/docs` or `
 
 Application is running 2 threads, one for the API to expose metrics and one for collecting metrics.
 
-Prerequisites 
+## Prerequisites 
 
 Before you continue, ensure you have met the following requirements:
 
-* You have installed the latest version of Python* 
+* You have installed the latest version of Python
+* You are using a Linux Machine. 
+
+## Installation
+
+To install the project on your machine, follow the steps : 
+
+### 1. Clone the project
+
+Open a terminal and use the following command : ** git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git **
+
+### 2. Install dependencies
+
+To be able to run the project, you will need a python virtual environment and some libraries used in the project. To install them, use the command : ** pip install -r requirements.txt **
+
+## 
