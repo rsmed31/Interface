@@ -75,7 +75,7 @@ docker run -d --name printerface-container -p 80:8000 /var/logs:/app/log
 ```
 Explanation on the command : 
 
-* `printerface` : That's the name of the docker container
+* `printerface` : Name of the docker container
 * `80` : server port
 * `8000` : docker container port
 * `/var/logs` : path to logs on the server
