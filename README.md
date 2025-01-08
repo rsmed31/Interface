@@ -33,7 +33,7 @@ To install the project on your machine, follow the steps :
 
 ### 1. Clone the project
 
-Open a terminal and use the following command : **git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git**
+Open a terminal and use the following command : <span style="color:red;">git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git** </span>
 
 ### 2. Install dependencies
 
