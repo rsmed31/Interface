@@ -25,17 +25,20 @@ Application is running 2 threads, one for the API to expose metrics and one for 
 Before you continue, ensure you have met the following requirements:
 
 * You have installed the latest version of Python
-* You are using a Linux Machine. 
+* You are using a Linux Machine. Windows is not currently supported.
 
 ## Installation
 
 To install the project on your machine, follow the steps : 
 
-###          1. Clone the project
+### 1. Clone the project
 
-Open a terminal and use the following command : **_git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git_** 
+Open a terminal and use the following command : 
+```sh
+git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git 
+```
 
-###          2. Install virtual environment and dependencies
+### 2. Install virtual environment and dependencies
 
 To be able to run the project, you will need a python virtual environment and some libraries used in the project. 
 
@@ -45,13 +48,20 @@ To be able to run the project, you will need a python virtual environment and so
 
 #### b) Dependencies
 
-All of the dependencies used in the project have been written in a file name 'requirements.txt'. To install them, choose the directory **_\printerface_** in your terminal and use the command : **_pip install -r requirements.txt_**
+All of the dependencies used in the project have been written in a file name 'requirements.txt'. To install them, choose the directory `\printerface` in your terminal and use the command : 
+```sh
+pip install -r requirements.txt 
+```
 
 ## Run project
 
 ### Locally 
 
-
+To run the project on your machine, you first need to activate your virtual environment. Access **_/printerface_** and use the command : 
+```sh
+source env/bin/activate
+```
+Once you've done that, run the command : **_
 
 ### Using Docker
 
