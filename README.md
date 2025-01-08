@@ -33,11 +33,11 @@ To install the project on your machine, follow the steps :
 
 ### 1. Clone the project
 
-Open a terminal and use the following command : **git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git** 
+Open a terminal and use the following command : **_git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git_** 
 
 ### 2. Install dependencies
 
-To be able to run the project, you will need a python virtual environment and some libraries used in the project. To install them, use the command : **pip install -r requirements.txt**
+To be able to run the project, you will need a python virtual environment and some libraries used in the project. To install them, use the command : **_pip install -r requirements.txt_**
 
 ## Run project
 
