@@ -45,8 +45,16 @@ To be able to run the project, you will need a python virtual environment and so
 
 #### b) Dependencies
 
-All of the dependencies used in the project have been written in a file name 'requirements.txt'. To install them, choose the directory \printerface and use the command : **_pip install -r requirements.txt_**
+All of the dependencies used in the project have been written in a file name 'requirements.txt'. To install them, choose the directory **_\printerface_** in your terminal and use the command : **_pip install -r requirements.txt_**
 
 ## Run project
+
+### Locally 
+
+
+
+### Using Docker
+
+
 
 
