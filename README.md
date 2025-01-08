@@ -21,31 +21,31 @@ Run project with `make debug` and consult url in log for api doc at `/docs` or `
 Application is running 2 threads, one for the API to expose metrics and one for collecting metrics.
 
 ## Prerequisites 
-<br>
-Before you continue, ensure you have met the following requirements:<br><br>
 
-* You have installed the latest version of Python, Docker<br><br>
+Before you continue, ensure you have met the following requirements:
+
+* You have installed the latest version of Python, Docker
 * You are using a Linux Machine. Windows is not currently supported.
-<br><br>
+
 ## Installation
 
 To install the project on your machine, follow the steps : 
-<br><br>
+
 ### 1. Clone the project
-<br><br>
+
 Open a terminal and use the following command : 
 ```sh
 git clone https://devops.telecomste.fr/printerfaceadmin/2024-25/group1/printerface.git 
 ```
-<br><br>
+
 ### 2. Install virtual environment and dependencies
-<br>
+
 To be able to run the project, you will need a python virtual environment and some libraries used in the project. <br><br>
 
 #### a) Virtual Environment 
 
 
-<br><br>
+
 #### b) Dependencies
 
 All of the dependencies used in the project have been written in a file name `requirements.txt`. To install them, choose the directory `\printerface` in your terminal and use the command : 
@@ -75,10 +75,10 @@ docker run -d --name printerface-container -p 80:8000 /var/logs:/app/log
 ```
 Explanation on the command : 
 
-* `printerface` : Name of the docker container<br><br>
-* `80` : server port<br><br>
-* `8000` : docker container port<br><br>
-* `/var/logs` : path to logs on the server<br><br>
-* `/app/logs` : path to logs on the docker container<br><br>
+* `printerface` : Name of the docker container
+* `80` : server port
+* `8000` : docker container port
+* `/var/logs` : path to logs on the server
+* `/app/logs` : path to logs on the docker container
 
 
