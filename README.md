@@ -27,9 +27,11 @@ Before you continue, ensure you have met the following requirements:
 * You have installed the latest version of Python, Docker
 * You are using a Linux Machine. Windows is not currently supported.
 
+
 ## Installation
 
 To install the project on your machine, follow the steps : 
+
 
 ### 1. Clone the project
 
