@@ -58,20 +58,14 @@ coverage:
 lint:
   stage: lint
   script:
-    - pylint src/ --output-format=text > pylint-report.txt
-  artifacts:
-    paths:
-      - pylint-report.txt
+    - pylint src/ 
   allow_failure: false
 
 # Static Analysis Stage
 static-analysis:
   stage: static-analysis
   script:
-    - bandit $BANDIT_OPTIONS -f json -o bandit-report.json
-  artifacts:
-    paths:
-      - bandit-report.json
+    - bandit $BANDIT_OPTIONS 
   allow_failure: false
 
 # Build Stage
