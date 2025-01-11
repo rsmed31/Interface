@@ -13,7 +13,6 @@ disable=
     unused-argument,
     unspecified-encoding,
     broad-exception-caught,
-    no-value-for-parameter,
 
 
 ignore= tests
