@@ -22,7 +22,7 @@ class Config:
     env: str = "production"
     debug: bool = False
     app_host: str = "0.0.0.0"
-    app_port: int = 8000
+    app_port: int = 8080
 
 
 @dataclass
