@@ -12,6 +12,8 @@ variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
+  COVERAGE_THRESHOLD: 80
+
 
 workflow:
   rules:
@@ -41,6 +43,7 @@ coverage:
   stage: coverage
   script:
     - pytest $COVERAGE_OPTIONS
+    - coverage report --fail-under=$COVERAGE_THRESHOLD  # Enforce coverage threshold
     - coverage html  # Generate an HTML report for better visualization
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   artifacts:
