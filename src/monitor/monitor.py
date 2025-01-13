@@ -4,6 +4,7 @@ import time
 import psutil
 import platform
 import os
+from cpuinfo import get_cpu_info
 from domain.services.logservice import LogService
 
 
@@ -76,7 +77,7 @@ class MonitorTask:
 
     def get_processor_name(self) -> str:
         """Fetch the processor name."""
-        return platform.processor()
+        return get_cpu_info()["brand_raw"]
 
     def get_cpu_frequency(self) -> float:
         """Fetch the CPU frequency in MHz."""

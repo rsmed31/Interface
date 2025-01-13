@@ -2,5 +2,7 @@ fastapi
 uvicorn
 click
 psutil
+py-cpuinfo
 httpx
 apache_log_parser
+cpuinfo
