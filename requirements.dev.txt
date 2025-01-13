@@ -2,7 +2,6 @@ fastapi
 uvicorn
 click
 pytest
-py-cpuinfo
 httpx
 psutil
 apache_log_parser

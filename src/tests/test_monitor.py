@@ -80,6 +80,17 @@ def test_get_disk_usage():
     assert isinstance(disk_stats, dict)
     assert all(key in disk_stats for key in ["total", "used", "free", "percent"])
 
+def test_get_processor_name():
+    """Test processor name getter"""
+    mock_processor = "Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz"
+    
+    with patch('platform.processor', return_value=mock_processor):
+        monitor = MonitorTask()
+        processor_name = monitor.get_processor_name()
+        assert isinstance(processor_name, str)
+        assert processor_name == mock_processor
+        assert len(processor_name) > 0
+
 def test_get_cpu_frequency(mock_cpu_freq):
     """Test CPU frequency getter"""
     monitor = MonitorTask()
