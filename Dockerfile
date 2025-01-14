@@ -13,7 +13,7 @@ COPY . .
 VOLUME ["/app/logs"]
 
 # Expose the port for the application
-EXPOSE 8000
+EXPOSE 8080
 
 # Set the entry point for the container to pass arguments
 ENTRYPOINT ["python", "src/main.py"]

@@ -5,6 +5,7 @@ import psutil
 import platform
 import os
 from domain.services.logservice import LogService
+import socket
 
 
 class MonitorTask:
@@ -75,20 +76,48 @@ class MonitorTask:
         return self.ram_usage
 
     def get_processor_name(self) -> str:
-        """Fetch the processor name."""
-        return platform.processor()
+        """Fetch the processor name with container-aware fallbacks."""
+        # Try platform.processor() first
+        processor = platform.processor()
+        if processor:
+            return processor
+
+        # Try platform.machine() as fallback
+        machine = platform.machine()
+        if machine:
+            return machine
+
+        # Try platform.uname() as last resort
+        try:
+            return platform.uname().processor
+        except:
+            return ""
 
     def get_cpu_frequency(self) -> float:
         """Fetch the CPU frequency in MHz."""
         return psutil.cpu_freq().current
 
     def get_connected_users(self):
-        """Return connected users using psutil.users()."""
+        """Return connected users using existing libraries only."""
         connected_users = []
-        for user in psutil.users():
-            user_info = (
-                f"{user.name} {user.terminal} {user.host or ''} "
-                f"{time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}"
-            )
-            connected_users.append(user_info)
-        return connected_users
+        hostname = socket.gethostname()
+        current_time = time.strftime("%Y-%m-%d %H:%M")
+
+        try:
+            # Try psutil.users() first
+            users = psutil.users()
+            if users:
+                for user in users:
+                    user_info = (
+                        f"{user.name} {user.terminal} {user.host or hostname} "
+                        f"{time.strftime('%Y-%m-%d %H:%M', time.localtime(user.started))}"
+                    )
+                    connected_users.append(user_info)
+                return connected_users
+
+            # Fallback to environment variables
+            username = os.getenv("USER") or os.getenv("USERNAME") or "container-user"
+            return [f"{username}  {hostname} {current_time}"]
+
+        except:
+            return [f"container-user container {hostname} {current_time}"]
