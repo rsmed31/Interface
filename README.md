@@ -110,7 +110,7 @@ docker pull devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerfac
 You can run the project only using Docker. Open a terminal and run the command : 
 
 ```sh
-docker run -d --name printerface-container -p 80:8000 /var/logs:/app/log --log-path /app/log/access.log
+docker run devops.telecomste.fr:5050/printerfaceadmin/2024-25/group1/printerface:latest -p 8080:8080 /var/logs:/app/log --log-path /app/log/access.log
 ```
 Explanation on the command : 
 
@@ -120,6 +120,8 @@ Explanation on the command :
 * `/var/logs` : path to logs on the server
 * `/app/logs` : path to logs on the docker container
 * --log-path is an option to specify where do the logs are to be accessed by the python script.
+
+PS: sometimes logs are on  other_vhosts_access.log so the path after --log-path should be changed accordingly
 
 
 ## Contributing
