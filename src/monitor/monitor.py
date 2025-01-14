@@ -79,12 +79,12 @@ class MonitorTask:
         """Fetch the processor name with container-aware fallbacks."""
         # Try platform.processor() first
         processor = platform.processor()
-        if processor and processor != "":
+        if processor:
             return processor
 
         # Try platform.machine() as fallback
         machine = platform.machine()
-        if machine and machine != "":
+        if machine:
             return machine
 
         # Try platform.uname() as last resort
