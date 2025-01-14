@@ -14,6 +14,7 @@ disable=
     unspecified-encoding,
     broad-exception-caught,
     no-value-for-parameter,
+    bare-except
 
 
 ignore= tests
