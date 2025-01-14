@@ -75,8 +75,22 @@ class MonitorTask:
         return self.ram_usage
 
     def get_processor_name(self) -> str:
-        """Fetch the processor name."""
-        return platform.processor()
+        """Fetch the processor name with container-aware fallbacks."""
+        # Try platform.processor() first
+        processor = platform.processor()
+        if processor and processor != "":
+            return processor
+
+        # Try platform.machine() as fallback
+        machine = platform.machine()
+        if machine and machine != "":
+         return machine
+
+        # Try platform.uname() as last resort
+        try:
+            return platform.uname().processor
+        except:
+            return ""
 
     def get_cpu_frequency(self) -> float:
         """Fetch the CPU frequency in MHz."""
