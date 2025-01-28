@@ -11,6 +11,8 @@
 
 A robust Server Monitoring Agent that provides real-time system metrics collection and monitoring through SSH connections. The agent collects CPU, RAM, disk usage, and log data from remote machines and exposes this information via a REST API.
 
+This project will be used to server a modern monitoring dashboard you can check it [here](https://github.com/rsmed31/interfaceUI)
+
 ## Features
 
 - **System Metrics**
